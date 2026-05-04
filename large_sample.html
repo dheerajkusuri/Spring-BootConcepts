@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Concepts - Large Sample HTML</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f4; color: #333; }
+        h1 { color: #2c3e50; }
+        h2 { color: #2980b9; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th { background: #2980b9; color: white; padding: 10px; }
+        td { padding: 8px; border: 1px solid #ddd; background: #fff; }
+        tr:nth-child(even) td { background: #f9f9f9; }
+        .section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        code { background: #eee; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+        pre { background: #2c3e50; color: #ecf0f1; padding: 20px; border-radius: 8px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+<h1>Spring Boot Concepts - Comprehensive Reference</h1>
+
+<div class="section">
+<h2>1. Spring Boot Overview</h2>
+<p>Spring Boot is an open-source Java-based framework used to create microservices. It is developed by Pivotal Team and is used to build stand-alone and production-ready spring applications. Spring Boot provides a good platform for Java developers to develop a stand-alone and production-grade spring application that you can just run.</p>
+<p>Spring Boot automatically configures your application based on the dependencies you have added to the project by using <code>@EnableAutoConfiguration</code> annotation. The entry point of the Spring Boot application is the class that contains <code>@SpringBootApplication</code> annotation and the main method.</p>
+<p>Spring Boot automatically scans all the components included in the project by using <code>@ComponentScan</code> annotation. Spring Boot includes a number of starters that allow you to add jars in the classpath. Spring Boot Starters are a set of convenient dependency descriptors that you can include in your application.</p>
+</div>
+
+<div class="section">
+<h2>2. Spring Boot Annotations</h2>
+<table>
+<tr><th>Annotation</th><th>Description</th><th>Usage</th></tr>
+<tr><td>@SpringBootApplication</td><td>Combines @Configuration, @EnableAutoConfiguration, @ComponentScan</td><td>Main class</td></tr>
+<tr><td>@RestController</td><td>Combines @Controller and @ResponseBody</td><td>REST endpoints</td></tr>
+<tr><td>@RequestMapping</td><td>Maps HTTP requests to handler methods</td><td>Controller methods</td></tr>
+<tr><td>@GetMapping</td><td>Shortcut for @RequestMapping(method = GET)</td><td>GET endpoints</td></tr>
+<tr><td>@PostMapping</td><td>Shortcut for @RequestMapping(method = POST)</td><td>POST endpoints</td></tr>
+<tr><td>@PutMapping</td><td>Shortcut for @RequestMapping(method = PUT)</td><td>PUT endpoints</td></tr>
+<tr><td>@DeleteMapping</td><td>Shortcut for @RequestMapping(method = DELETE)</td><td>DELETE endpoints</td></tr>
+<tr><td>@Autowired</td><td>Injects dependencies automatically</td><td>Fields, constructors, setters</td></tr>
+<tr><td>@Component</td><td>Generic stereotype for Spring-managed component</td><td>Any Spring bean</td></tr>
+<tr><td>@Service</td><td>Specialization of @Component for service layer</td><td>Service classes</td></tr>
+<tr><td>@Repository</td><td>Specialization of @Component for DAO layer</td><td>Data access classes</td></tr>
+<tr><td>@Configuration</td><td>Indicates class contains bean definitions</td><td>Config classes</td></tr>
+<tr><td>@Bean</td><td>Indicates method produces a Spring bean</td><td>Config methods</td></tr>
+<tr><td>@Value</td><td>Injects values from properties files</td><td>Fields</td></tr>
+<tr><td>@PathVariable</td><td>Extracts values from URI template</td><td>Method parameters</td></tr>
+<tr><td>@RequestParam</td><td>Extracts query parameters</td><td>Method parameters</td></tr>
+<tr><td>@RequestBody</td><td>Binds HTTP request body to method parameter</td><td>Method parameters</td></tr>
+<tr><td>@ResponseBody</td><td>Binds method return value to HTTP response body</td><td>Method return</td></tr>
+<tr><td>@Entity</td><td>Marks class as JPA entity</td><td>Model classes</td></tr>
+<tr><td>@Table</td><td>Specifies database table for entity</td><td>Model classes</td></tr>
+<tr><td>@Id</td><td>Marks field as primary key</td><td>Entity fields</td></tr>
+<tr><td>@GeneratedValue</td><td>Specifies primary key generation strategy</td><td>Entity fields</td></tr>
+<tr><td>@Column</td><td>Specifies column mapping for entity field</td><td>Entity fields</td></tr>
+<tr><td>@Transactional</td><td>Defines transaction boundaries</td><td>Service methods</td></tr>
+<tr><td>@EnableAutoConfiguration</td><td>Enables Spring Boot auto-configuration</td><td>Main class</td></tr>
+<tr><td>@ComponentScan</td><td>Configures component scanning</td><td>Config classes</td></tr>
+<tr><td>@Profile</td><td>Indicates component is eligible for registration when profiles are active</td><td>Config classes</td></tr>
+<tr><td>@Conditional</td><td>Indicates component is eligible based on condition</td><td>Config classes</td></tr>
+<tr><td>@EnableCaching</td><td>Enables Spring caching support</td><td>Config classes</td></tr>
+<tr><td>@Cacheable</td><td>Indicates method result should be cached</td><td>Service methods</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>3. Spring Boot Auto-Configuration</h2>
+<p>Spring Boot auto-configuration attempts to automatically configure your Spring application based on the jar dependencies that you have added. For example, if HSQLDB is on your classpath, and you have not manually configured any database connection beans, then Spring Boot auto-configures an in-memory database.</p>
+<p>You need to opt-in to auto-configuration by adding the <code>@EnableAutoConfiguration</code> or <code>@SpringBootApplication</code> annotations to one of your <code>@Configuration</code> classes.</p>
+<pre>
+@SpringBootApplication
+public class MyApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+</pre>
+<p>If you find that specific auto-configuration classes are being applied that you don't want, you can use the exclude attribute of <code>@SpringBootApplication</code> to disable them.</p>
+<pre>
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+public class MyApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>4. Spring Boot Starters</h2>
+<table>
+<tr><th>Starter</th><th>Description</th></tr>
+<tr><td>spring-boot-starter</td><td>Core starter, including auto-configuration support, logging and YAML</td></tr>
+<tr><td>spring-boot-starter-web</td><td>Starter for building web, including RESTful, applications using Spring MVC</td></tr>
+<tr><td>spring-boot-starter-data-jpa</td><td>Starter for using Spring Data JPA with Hibernate</td></tr>
+<tr><td>spring-boot-starter-security</td><td>Starter for using Spring Security</td></tr>
+<tr><td>spring-boot-starter-test</td><td>Starter for testing Spring Boot applications</td></tr>
+<tr><td>spring-boot-starter-actuator</td><td>Starter for using Spring Boot Actuator</td></tr>
+<tr><td>spring-boot-starter-thymeleaf</td><td>Starter for building MVC web applications using Thymeleaf views</td></tr>
+<tr><td>spring-boot-starter-mail</td><td>Starter for using Java Mail and Spring Framework email sending support</td></tr>
+<tr><td>spring-boot-starter-cache</td><td>Starter for using Spring Framework caching support</td></tr>
+<tr><td>spring-boot-starter-aop</td><td>Starter for aspect-oriented programming with Spring AOP and AspectJ</td></tr>
+<tr><td>spring-boot-starter-batch</td><td>Starter for using Spring Batch</td></tr>
+<tr><td>spring-boot-starter-data-mongodb</td><td>Starter for using MongoDB document-oriented database</td></tr>
+<tr><td>spring-boot-starter-data-redis</td><td>Starter for using Redis key-value data store</td></tr>
+<tr><td>spring-boot-starter-data-elasticsearch</td><td>Starter for using Elasticsearch search and analytics engine</td></tr>
+<tr><td>spring-boot-starter-amqp</td><td>Starter for using Spring AMQP and Rabbit MQ</td></tr>
+<tr><td>spring-boot-starter-kafka</td><td>Starter for using Apache Kafka Streams</td></tr>
+<tr><td>spring-boot-starter-websocket</td><td>Starter for building WebSocket applications</td></tr>
+<tr><td>spring-boot-starter-validation</td><td>Starter for using Java Bean Validation with Hibernate Validator</td></tr>
+<tr><td>spring-boot-starter-oauth2-client</td><td>Starter for using Spring Security OAuth2/OpenID Connect client features</td></tr>
+<tr><td>spring-boot-starter-oauth2-resource-server</td><td>Starter for using Spring Security OAuth2 resource server features</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>5. Spring Boot Properties</h2>
+<table>
+<tr><th>Property</th><th>Default</th><th>Description</th></tr>
+<tr><td>server.port</td><td>8080</td><td>Server HTTP port</td></tr>
+<tr><td>server.servlet.context-path</td><td>/</td><td>Context path of the application</td></tr>
+<tr><td>spring.datasource.url</td><td>-</td><td>JDBC URL of the database</td></tr>
+<tr><td>spring.datasource.username</td><td>-</td><td>Login username of the database</td></tr>
+<tr><td>spring.datasource.password</td><td>-</td><td>Login password of the database</td></tr>
+<tr><td>spring.datasource.driver-class-name</td><td>-</td><td>Fully qualified name of the JDBC driver</td></tr>
+<tr><td>spring.jpa.hibernate.ddl-auto</td><td>none</td><td>DDL mode (none, validate, update, create, create-drop)</td></tr>
+<tr><td>spring.jpa.show-sql</td><td>false</td><td>Whether to enable logging of SQL statements</td></tr>
+<tr><td>spring.jpa.properties.hibernate.dialect</td><td>-</td><td>Hibernate dialect</td></tr>
+<tr><td>spring.security.user.name</td><td>user</td><td>Default user name</td></tr>
+<tr><td>spring.security.user.password</td><td>-</td><td>Password for the default user name</td></tr>
+<tr><td>spring.mail.host</td><td>-</td><td>SMTP server host</td></tr>
+<tr><td>spring.mail.port</td><td>-</td><td>SMTP server port</td></tr>
+<tr><td>spring.cache.type</td><td>-</td><td>Cache type (none, simple, jcache, ehcache, hazelcast, infinispan, couchbase, redis, caffeine)</td></tr>
+<tr><td>spring.profiles.active</td><td>-</td><td>Comma-separated list of active profiles</td></tr>
+<tr><td>logging.level.root</td><td>INFO</td><td>Root log level</td></tr>
+<tr><td>logging.file.name</td><td>-</td><td>Log file name</td></tr>
+<tr><td>management.endpoints.web.exposure.include</td><td>health,info</td><td>Endpoint IDs that should be included</td></tr>
+<tr><td>spring.application.name</td><td>-</td><td>Application name</td></tr>
+<tr><td>spring.mvc.view.prefix</td><td>-</td><td>Spring MVC view prefix</td></tr>
+<tr><td>spring.mvc.view.suffix</td><td>-</td><td>Spring MVC view suffix</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>6. Spring Boot Actuator Endpoints</h2>
+<table>
+<tr><th>Endpoint</th><th>HTTP Method</th><th>Description</th></tr>
+<tr><td>/actuator/health</td><td>GET</td><td>Shows application health information</td></tr>
+<tr><td>/actuator/info</td><td>GET</td><td>Displays arbitrary application info</td></tr>
+<tr><td>/actuator/metrics</td><td>GET</td><td>Shows metrics information for the current application</td></tr>
+<tr><td>/actuator/env</td><td>GET</td><td>Exposes properties from Spring Environment</td></tr>
+<tr><td>/actuator/beans</td><td>GET</td><td>Displays a complete list of all Spring beans</td></tr>
+<tr><td>/actuator/mappings</td><td>GET</td><td>Displays a collated list of all @RequestMapping paths</td></tr>
+<tr><td>/actuator/loggers</td><td>GET</td><td>Shows and modifies the configuration of loggers</td></tr>
+<tr><td>/actuator/threaddump</td><td>GET</td><td>Performs a thread dump</td></tr>
+<tr><td>/actuator/heapdump</td><td>GET</td><td>Returns a GZip compressed hprof heap dump file</td></tr>
+<tr><td>/actuator/shutdown</td><td>POST</td><td>Lets the application be gracefully shutdown</td></tr>
+<tr><td>/actuator/refresh</td><td>POST</td><td>Refreshes the application configuration</td></tr>
+<tr><td>/actuator/httptrace</td><td>GET</td><td>Displays HTTP trace information</td></tr>
+<tr><td>/actuator/auditevents</td><td>GET</td><td>Exposes audit events information</td></tr>
+<tr><td>/actuator/caches</td><td>GET</td><td>Exposes available caches</td></tr>
+<tr><td>/actuator/conditions</td><td>GET</td><td>Shows the conditions that were evaluated on configuration and auto-configuration classes</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>7. Spring Boot Security</h2>
+<p>Spring Security is a powerful and highly customizable authentication and access-control framework. It is the de-facto standard for securing Spring-based applications. Spring Security is a framework that focuses on providing both authentication and authorization to Java applications.</p>
+<pre>
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/public/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+            .logout()
+                .permitAll();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+</pre>
+<table>
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td>Authentication</td><td>Verifying the identity of a user</td></tr>
+<tr><td>Authorization</td><td>Determining what an authenticated user is allowed to do</td></tr>
+<tr><td>CSRF Protection</td><td>Cross-Site Request Forgery protection</td></tr>
+<tr><td>Session Management</td><td>Managing user sessions</td></tr>
+<tr><td>Remember Me</td><td>Persistent login across sessions</td></tr>
+<tr><td>OAuth2</td><td>OAuth2 login and resource server support</td></tr>
+<tr><td>JWT</td><td>JSON Web Token support</td></tr>
+<tr><td>LDAP</td><td>LDAP authentication support</td></tr>
+<tr><td>Method Security</td><td>Securing individual methods with annotations</td></tr>
+<tr><td>ACL</td><td>Access Control List for domain object security</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>8. Spring Data JPA</h2>
+<p>Spring Data JPA, part of the larger Spring Data family, makes it easy to implement JPA-based repositories. This module deals with enhanced support for JPA-based data access layers. It makes it easier to build Spring-powered applications that use data access technologies.</p>
+<pre>
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private String email;
+
+    // getters and setters
+}
+
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    Optional&lt;User&gt; findByUsername(String username);
+    List&lt;User&gt; findByEmail(String email);
+    boolean existsByUsername(String username);
+}
+</pre>
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr><td>save(entity)</td><td>Saves a given entity</td></tr>
+<tr><td>findById(id)</td><td>Retrieves an entity by its id</td></tr>
+<tr><td>findAll()</td><td>Returns all instances of the type</td></tr>
+<tr><td>deleteById(id)</td><td>Deletes the entity with the given id</td></tr>
+<tr><td>count()</td><td>Returns the number of entities available</td></tr>
+<tr><td>existsById(id)</td><td>Returns whether an entity with the given id exists</td></tr>
+<tr><td>findAll(Sort sort)</td><td>Returns all entities sorted by the given options</td></tr>
+<tr><td>findAll(Pageable pageable)</td><td>Returns a Page of entities meeting the paging restriction</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>9. Spring Boot Testing</h2>
+<table>
+<tr><th>Annotation</th><th>Description</th></tr>
+<tr><td>@SpringBootTest</td><td>Loads full application context for integration tests</td></tr>
+<tr><td>@WebMvcTest</td><td>Loads only web layer for controller tests</td></tr>
+<tr><td>@DataJpaTest</td><td>Loads only JPA components for repository tests</td></tr>
+<tr><td>@MockBean</td><td>Creates and injects a Mockito mock</td></tr>
+<tr><td>@SpyBean</td><td>Creates and injects a Mockito spy</td></tr>
+<tr><td>@TestConfiguration</td><td>Defines additional beans for tests</td></tr>
+<tr><td>@AutoConfigureMockMvc</td><td>Auto-configures MockMvc</td></tr>
+<tr><td>@ExtendWith(SpringExtension.class)</td><td>Integrates Spring TestContext with JUnit 5</td></tr>
+</table>
+<pre>
+@SpringBootTest
+@AutoConfigureMockMvc
+class UserControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
+
+    @Test
+    void testGetUser() throws Exception {
+        User user = new User(1L, "testuser", "test@example.com");
+        when(userService.findById(1L)).thenReturn(Optional.of(user));
+
+        mockMvc.perform(get("/api/users/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.username").value("testuser"));
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>10. Spring Boot Microservices Patterns</h2>
+<table>
+<tr><th>Pattern</th><th>Tool/Library</th><th>Description</th></tr>
+<tr><td>Service Discovery</td><td>Eureka, Consul</td><td>Automatic detection of services on a network</td></tr>
+<tr><td>Load Balancing</td><td>Ribbon, Spring Cloud LoadBalancer</td><td>Distributing requests across service instances</td></tr>
+<tr><td>API Gateway</td><td>Spring Cloud Gateway, Zuul</td><td>Single entry point for all clients</td></tr>
+<tr><td>Circuit Breaker</td><td>Resilience4j, Hystrix</td><td>Preventing cascading failures</td></tr>
+<tr><td>Config Server</td><td>Spring Cloud Config</td><td>Centralized external configuration management</td></tr>
+<tr><td>Distributed Tracing</td><td>Sleuth, Zipkin</td><td>Tracking requests across microservices</td></tr>
+<tr><td>Message Broker</td><td>RabbitMQ, Kafka</td><td>Asynchronous communication between services</td></tr>
+<tr><td>Service Mesh</td><td>Istio, Linkerd</td><td>Infrastructure layer for service-to-service communication</td></tr>
+<tr><td>Saga Pattern</td><td>Axon, custom</td><td>Managing distributed transactions</td></tr>
+<tr><td>CQRS</td><td>Axon, custom</td><td>Separating read and write operations</td></tr>
+<tr><td>Event Sourcing</td><td>Axon, custom</td><td>Storing state changes as events</td></tr>
+<tr><td>Bulkhead</td><td>Resilience4j</td><td>Isolating failures to prevent cascading</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>11. Spring Boot REST API Best Practices</h2>
+<table>
+<tr><th>#</th><th>Practice</th><th>Description</th></tr>
+<tr><td>1</td><td>Use proper HTTP methods</td><td>GET for read, POST for create, PUT/PATCH for update, DELETE for delete</td></tr>
+<tr><td>2</td><td>Use proper HTTP status codes</td><td>200 OK, 201 Created, 204 No Content, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Server Error</td></tr>
+<tr><td>3</td><td>Version your API</td><td>Use /api/v1/, /api/v2/ to version your endpoints</td></tr>
+<tr><td>4</td><td>Use nouns for resources</td><td>/api/users not /api/getUsers</td></tr>
+<tr><td>5</td><td>Use plural nouns</td><td>/api/users not /api/user</td></tr>
+<tr><td>6</td><td>Handle errors gracefully</td><td>Return meaningful error messages with proper status codes</td></tr>
+<tr><td>7</td><td>Use pagination</td><td>Paginate large collections with page and size parameters</td></tr>
+<tr><td>8</td><td>Use filtering and sorting</td><td>Allow clients to filter and sort resources</td></tr>
+<tr><td>9</td><td>Secure your API</td><td>Use HTTPS, authentication, and authorization</td></tr>
+<tr><td>10</td><td>Document your API</td><td>Use Swagger/OpenAPI for API documentation</td></tr>
+<tr><td>11</td><td>Use DTOs</td><td>Separate your domain model from your API model</td></tr>
+<tr><td>12</td><td>Validate input</td><td>Use Bean Validation to validate request bodies</td></tr>
+<tr><td>13</td><td>Use HATEOAS</td><td>Include links in responses to guide clients</td></tr>
+<tr><td>14</td><td>Use caching</td><td>Cache responses to improve performance</td></tr>
+<tr><td>15</td><td>Use compression</td><td>Compress responses to reduce bandwidth</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>12. Spring Boot Exception Handling</h2>
+<pre>
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleResourceNotFoundException(
+            ResourceNotFoundException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            ex.getMessage(),
+            request.getDescription(false)
+        );
+        return new ResponseEntity&lt;&gt;(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleValidationException(
+            ValidationException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+            HttpStatus.BAD_REQUEST.value(),
+            ex.getMessage(),
+            request.getDescription(false)
+        );
+        return new ResponseEntity&lt;&gt;(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleGlobalException(
+            Exception ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            ex.getMessage(),
+            request.getDescription(false)
+        );
+        return new ResponseEntity&lt;&gt;(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>13. Spring Boot Caching</h2>
+<pre>
+@Configuration
+@EnableCaching
+public class CacheConfig {
+
+    @Bean
+    public CacheManager cacheManager() {
+        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        cacheManager.setCaches(Arrays.asList(
+            new ConcurrentMapCache("users"),
+            new ConcurrentMapCache("products"),
+            new ConcurrentMapCache("orders")
+        ));
+        return cacheManager;
+    }
+}
+
+@Service
+public class UserService {
+
+    @Cacheable(value = "users", key = "#id")
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow();
+    }
+
+    @CachePut(value = "users", key = "#user.id")
+    public User update(User user) {
+        return userRepository.save(user);
+    }
+
+    @CacheEvict(value = "users", key = "#id")
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>14. Spring Boot Profiles</h2>
+<table>
+<tr><th>Profile</th><th>File</th><th>Use Case</th></tr>
+<tr><td>default</td><td>application.properties</td><td>Default configuration</td></tr>
+<tr><td>dev</td><td>application-dev.properties</td><td>Development environment</td></tr>
+<tr><td>test</td><td>application-test.properties</td><td>Testing environment</td></tr>
+<tr><td>staging</td><td>application-staging.properties</td><td>Staging environment</td></tr>
+<tr><td>prod</td><td>application-prod.properties</td><td>Production environment</td></tr>
+</table>
+<pre>
+# application-dev.properties
+spring.datasource.url=jdbc:h2:mem:devdb
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=create-drop
+logging.level.root=DEBUG
+
+# application-prod.properties
+spring.datasource.url=jdbc:postgresql://prod-server:5432/proddb
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+spring.jpa.hibernate.ddl-auto=validate
+logging.level.root=WARN
+</pre>
+</div>
+
+<div class="section">
+<h2>15. Spring Boot Docker Integration</h2>
+<pre>
+FROM openjdk:17-jdk-slim
+VOLUME /tmp
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+</pre>
+<pre>
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:postgresql://db:5432/mydb
+      - DB_USERNAME=myuser
+      - DB_PASSWORD=mypassword
+    depends_on:
+      - db
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
+</pre>
+</div>
+
+<div class="section">
+<h2>16. Spring Boot Validation</h2>
+<table>
+<tr><th>Annotation</th><th>Description</th></tr>
+<tr><td>@NotNull</td><td>Validates that the annotated value is not null</td></tr>
+<tr><td>@NotEmpty</td><td>Validates that the annotated string is not null or empty</td></tr>
+<tr><td>@NotBlank</td><td>Validates that the annotated string is not null, empty, or whitespace</td></tr>
+<tr><td>@Size</td><td>Validates that the annotated element size is between min and max</td></tr>
+<tr><td>@Min</td><td>Validates that the annotated element is a number whose value is higher than or equal to the specified minimum</td></tr>
+<tr><td>@Max</td><td>Validates that the annotated element is a number whose value is lower than or equal to the specified maximum</td></tr>
+<tr><td>@Email</td><td>Validates that the annotated string is a valid email address</td></tr>
+<tr><td>@Pattern</td><td>Validates that the annotated string matches the specified regular expression</td></tr>
+<tr><td>@Positive</td><td>Validates that the annotated element is a strictly positive number</td></tr>
+<tr><td>@Negative</td><td>Validates that the annotated element is a strictly negative number</td></tr>
+<tr><td>@Past</td><td>Validates that the annotated date is in the past</td></tr>
+<tr><td>@Future</td><td>Validates that the annotated date is in the future</td></tr>
+<tr><td>@Valid</td><td>Marks a property, method parameter or method return type for validation cascading</td></tr>
+<tr><td>@Validated</td><td>Variant of JSR-303 @Valid that supports validation groups</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>17. Spring Boot Logging</h2>
+<table>
+<tr><th>Level</th><th>Description</th><th>When to Use</th></tr>
+<tr><td>TRACE</td><td>Most detailed information</td><td>Fine-grained debugging</td></tr>
+<tr><td>DEBUG</td><td>Detailed information for debugging</td><td>Development debugging</td></tr>
+<tr><td>INFO</td><td>General information about application progress</td><td>Normal operation</td></tr>
+<tr><td>WARN</td><td>Potentially harmful situations</td><td>Unexpected but recoverable situations</td></tr>
+<tr><td>ERROR</td><td>Error events that might still allow the application to continue</td><td>Errors that need attention</td></tr>
+<tr><td>FATAL</td><td>Severe error events that will presumably lead the application to abort</td><td>Critical failures</td></tr>
+</table>
+<pre>
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Service
+public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    public User findById(Long id) {
+        logger.debug("Finding user with id: {}", id);
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> {
+                logger.error("User not found with id: {}", id);
+                return new ResourceNotFoundException("User not found");
+            });
+        logger.info("Found user: {}", user.getUsername());
+        return user;
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>18. Spring Boot Scheduling</h2>
+<pre>
+@Configuration
+@EnableScheduling
+public class SchedulingConfig {
+}
+
+@Component
+public class ScheduledTasks {
+
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
+
+    @Scheduled(fixedRate = 5000)
+    public void reportCurrentTime() {
+        logger.info("The time is now: {}", new Date());
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void fixedDelayTask() {
+        logger.info("Fixed delay task - {}", System.currentTimeMillis() / 1000);
+    }
+
+    @Scheduled(cron = "0 * * * * ?")
+    public void cronTask() {
+        logger.info("Cron task - {}", System.currentTimeMillis() / 1000);
+    }
+
+    @Scheduled(initialDelay = 1000, fixedRate = 5000)
+    public void initialDelayTask() {
+        logger.info("Initial delay task - {}", System.currentTimeMillis() / 1000);
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>19. Spring Boot Event Handling</h2>
+<pre>
+// Custom Event
+public class UserCreatedEvent extends ApplicationEvent {
+    private final User user;
+
+    public UserCreatedEvent(Object source, User user) {
+        super(source);
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+}
+
+// Event Publisher
+@Service
+public class UserService {
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    public User createUser(User user) {
+        User savedUser = userRepository.save(user);
+        eventPublisher.publishEvent(new UserCreatedEvent(this, savedUser));
+        return savedUser;
+    }
+}
+
+// Event Listener
+@Component
+public class UserCreatedEventListener {
+
+    @EventListener
+    public void handleUserCreatedEvent(UserCreatedEvent event) {
+        User user = event.getUser();
+        // Send welcome email, update analytics, etc.
+    }
+
+    @Async
+    @EventListener
+    public void handleUserCreatedEventAsync(UserCreatedEvent event) {
+        // Handle asynchronously
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>20. Spring Boot Internationalization (i18n)</h2>
+<pre>
+@Configuration
+public class MessageConfig {
+
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource =
+            new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.ENGLISH);
+        return slr;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+        return lci;
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>21. Spring Boot WebSocket</h2>
+<pre>
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/topic");
+        config.setApplicationDestinationPrefixes("/app");
+    }
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws").withSockJS();
+    }
+}
+
+@Controller
+public class ChatController {
+
+    @MessageMapping("/chat.sendMessage")
+    @SendTo("/topic/public")
+    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+        return chatMessage;
+    }
+
+    @MessageMapping("/chat.addUser")
+    @SendTo("/topic/public")
+    public ChatMessage addUser(@Payload ChatMessage chatMessage,
+                               SimpMessageHeaderAccessor headerAccessor) {
+        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        return chatMessage;
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>22. Spring Boot Batch Processing</h2>
+<pre>
+@Configuration
+@EnableBatchProcessing
+public class BatchConfig {
+
+    @Autowired
+    public JobBuilderFactory jobBuilderFactory;
+
+    @Autowired
+    public StepBuilderFactory stepBuilderFactory;
+
+    @Bean
+    public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
+        return jobBuilderFactory.get("importUserJob")
+            .incrementer(new RunIdIncrementer())
+            .listener(listener)
+            .flow(step1)
+            .end()
+            .build();
+    }
+
+    @Bean
+    public Step step1(JdbcBatchItemWriter&lt;User&gt; writer) {
+        return stepBuilderFactory.get("step1")
+            .&lt;UserInput, User&gt;chunk(10)
+            .reader(reader())
+            .processor(processor())
+            .writer(writer)
+            .build();
+    }
+
+    @Bean
+    public FlatFileItemReader&lt;UserInput&gt; reader() {
+        return new FlatFileItemReaderBuilder&lt;UserInput&gt;()
+            .name("userItemReader")
+            .resource(new ClassPathResource("sample-data.csv"))
+            .delimited()
+            .names(new String[]{"firstName", "lastName"})
+            .fieldSetMapper(new BeanWrapperFieldSetMapper&lt;UserInput&gt;() {{
+                setTargetType(UserInput.class);
+            }})
+            .build();
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>23. Spring Boot Reactive Programming</h2>
+<pre>
+@RestController
+@RequestMapping("/api/reactive")
+public class ReactiveUserController {
+
+    @Autowired
+    private ReactiveUserRepository userRepository;
+
+    @GetMapping
+    public Flux&lt;User&gt; getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Mono&lt;ResponseEntity&lt;User&gt;&gt; getUserById(@PathVariable String id) {
+        return userRepository.findById(id)
+            .map(user -> ResponseEntity.ok(user))
+            .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono&lt;User&gt; createUser(@RequestBody User user) {
+        return userRepository.save(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public Mono&lt;ResponseEntity&lt;Void&gt;&gt; deleteUser(@PathVariable String id) {
+        return userRepository.findById(id)
+            .flatMap(existingUser ->
+                userRepository.delete(existingUser)
+                    .then(Mono.just(ResponseEntity.&lt;Void&gt;ok().build()))
+            )
+            .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>24. Spring Boot GraphQL</h2>
+<pre>
+@Controller
+public class UserGraphQLController {
+
+    @Autowired
+    private UserService userService;
+
+    @QueryMapping
+    public List&lt;User&gt; users() {
+        return userService.findAll();
+    }
+
+    @QueryMapping
+    public User userById(@Argument Long id) {
+        return userService.findById(id);
+    }
+
+    @MutationMapping
+    public User createUser(@Argument String username, @Argument String email) {
+        return userService.create(username, email);
+    }
+
+    @MutationMapping
+    public Boolean deleteUser(@Argument Long id) {
+        userService.delete(id);
+        return true;
+    }
+
+    @SubscriptionMapping
+    public Flux&lt;User&gt; userCreated() {
+        return userService.getUserCreatedFlux();
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>25. Spring Boot Monitoring with Micrometer</h2>
+<pre>
+@RestController
+public class MetricsController {
+
+    private final Counter requestCounter;
+    private final Timer requestTimer;
+    private final Gauge activeUsers;
+
+    public MetricsController(MeterRegistry registry) {
+        this.requestCounter = Counter.builder("api.requests.total")
+            .description("Total number of API requests")
+            .tag("application", "spring-boot-app")
+            .register(registry);
+
+        this.requestTimer = Timer.builder("api.request.duration")
+            .description("API request duration")
+            .register(registry);
+
+        AtomicInteger activeUsersCount = new AtomicInteger(0);
+        this.activeUsers = Gauge.builder("api.users.active", activeUsersCount, AtomicInteger::get)
+            .description("Number of active users")
+            .register(registry);
+    }
+
+    @GetMapping("/api/data")
+    public ResponseEntity&lt;String&gt; getData() {
+        requestCounter.increment();
+        return requestTimer.record(() -> {
+            // Process request
+            return ResponseEntity.ok("data");
+        });
+    }
+}
+</pre>
+</div>
+
+<!-- Padding sections to reach ~1MB -->
+<div class="section">
+<h2>26. Additional Reference Data - HTTP Status Codes</h2>
+<table>
+<tr><th>Code</th><th>Status</th><th>Description</th></tr>
+<tr><td>100</td><td>Continue</td><td>The server has received the request headers and the client should proceed to send the request body</td></tr>
+<tr><td>101</td><td>Switching Protocols</td><td>The requester has asked the server to switch protocols and the server has agreed to do so</td></tr>
+<tr><td>200</td><td>OK</td><td>Standard response for successful HTTP requests</td></tr>
+<tr><td>201</td><td>Created</td><td>The request has been fulfilled, resulting in the creation of a new resource</td></tr>
+<tr><td>202</td><td>Accepted</td><td>The request has been accepted for processing, but the processing has not been completed</td></tr>
+<tr><td>204</td><td>No Content</td><td>The server successfully processed the request and is not returning any content</td></tr>
+<tr><td>301</td><td>Moved Permanently</td><td>This and all future requests should be directed to the given URI</td></tr>
+<tr><td>302</td><td>Found</td><td>Tells the client to look at another URL</td></tr>
+<tr><td>304</td><td>Not Modified</td><td>Indicates that the resource has not been modified since the version specified by the request headers</td></tr>
+<tr><td>400</td><td>Bad Request</td><td>The server cannot or will not process the request due to an apparent client error</td></tr>
+<tr><td>401</td><td>Unauthorized</td><td>Authentication is required and has failed or has not yet been provided</td></tr>
+<tr><td>403</td><td>Forbidden</td><td>The request was valid, but the server is refusing action</td></tr>
+<tr><td>404</td><td>Not Found</td><td>The requested resource could not be found but may be available in the future</td></tr>
+<tr><td>405</td><td>Method Not Allowed</td><td>A request method is not supported for the requested resource</td></tr>
+<tr><td>409</td><td>Conflict</td><td>Indicates that the request could not be processed because of conflict in the current state of the resource</td></tr>
+<tr><td>410</td><td>Gone</td><td>Indicates that the resource requested is no longer available and will not be available again</td></tr>
+<tr><td>422</td><td>Unprocessable Entity</td><td>The request was well-formed but was unable to be followed due to semantic errors</td></tr>
+<tr><td>429</td><td>Too Many Requests</td><td>The user has sent too many requests in a given amount of time</td></tr>
+<tr><td>500</td><td>Internal Server Error</td><td>A generic error message, given when an unexpected condition was encountered</td></tr>
+<tr><td>501</td><td>Not Implemented</td><td>The server either does not recognize the request method, or it lacks the ability to fulfil the request</td></tr>
+<tr><td>502</td><td>Bad Gateway</td><td>The server was acting as a gateway or proxy and received an invalid response from the upstream server</td></tr>
+<tr><td>503</td><td>Service Unavailable</td><td>The server is currently unavailable (because it is overloaded or down for maintenance)</td></tr>
+<tr><td>504</td><td>Gateway Timeout</td><td>The server was acting as a gateway or proxy and did not receive a timely response from the upstream server</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>27. Design Patterns in Spring Boot</h2>
+<table>
+<tr><th>Pattern</th><th>Category</th><th>Spring Implementation</th><th>Description</th></tr>
+<tr><td>Singleton</td><td>Creational</td><td>Spring Beans (default scope)</td><td>Ensures a class has only one instance</td></tr>
+<tr><td>Factory</td><td>Creational</td><td>BeanFactory, ApplicationContext</td><td>Creates objects without specifying the exact class</td></tr>
+<tr><td>Prototype</td><td>Creational</td><td>@Scope("prototype")</td><td>Creates a new instance each time</td></tr>
+<tr><td>Proxy</td><td>Structural</td><td>AOP, @Transactional, @Cacheable</td><td>Provides a surrogate for another object</td></tr>
+<tr><td>Decorator</td><td>Structural</td><td>BeanPostProcessor</td><td>Adds behavior to objects dynamically</td></tr>
+<tr><td>Template Method</td><td>Behavioral</td><td>JdbcTemplate, RestTemplate</td><td>Defines skeleton of algorithm in base class</td></tr>
+<tr><td>Observer</td><td>Behavioral</td><td>ApplicationEvent, @EventListener</td><td>Defines one-to-many dependency between objects</td></tr>
+<tr><td>Strategy</td><td>Behavioral</td><td>Multiple implementations of interface</td><td>Defines family of algorithms, encapsulates each one</td></tr>
+<tr><td>Chain of Responsibility</td><td>Behavioral</td><td>Filter chains, HandlerInterceptor</td><td>Passes request along chain of handlers</td></tr>
+<tr><td>Command</td><td>Behavioral</td><td>Spring Batch ItemProcessor</td><td>Encapsulates a request as an object</td></tr>
+<tr><td>MVC</td><td>Architectural</td><td>Spring MVC</td><td>Separates application into Model, View, Controller</td></tr>
+<tr><td>Repository</td><td>Architectural</td><td>Spring Data Repositories</td><td>Abstracts data access layer</td></tr>
+<tr><td>Service Locator</td><td>Architectural</td><td>ApplicationContext.getBean()</td><td>Encapsulates processes involved in obtaining a service</td></tr>
+<tr><td>Dependency Injection</td><td>Architectural</td><td>@Autowired, constructor injection</td><td>Removes hard-coded dependencies</td></tr>
+<tr><td>Front Controller</td><td>Architectural</td><td>DispatcherServlet</td><td>Provides centralized request handling mechanism</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>28. Spring Boot Interview Questions</h2>
+<table>
+<tr><th>#</th><th>Question</th><th>Key Points</th></tr>
+<tr><td>1</td><td>What is Spring Boot?</td><td>Auto-configuration, embedded server, starter dependencies, production-ready features</td></tr>
+<tr><td>2</td><td>What are the advantages of Spring Boot?</td><td>Rapid development, no XML config, embedded server, auto-configuration, actuator</td></tr>
+<tr><td>3</td><td>What is auto-configuration?</td><td>Automatically configures Spring application based on classpath dependencies</td></tr>
+<tr><td>4</td><td>What is @SpringBootApplication?</td><td>Combines @Configuration, @EnableAutoConfiguration, @ComponentScan</td></tr>
+<tr><td>5</td><td>What are Spring Boot starters?</td><td>Convenient dependency descriptors for common functionality</td></tr>
+<tr><td>6</td><td>What is Spring Boot Actuator?</td><td>Production-ready features for monitoring and managing application</td></tr>
+<tr><td>7</td><td>What is the difference between @Component, @Service, @Repository?</td><td>All are stereotypes; @Service for business logic, @Repository for data access with exception translation</td></tr>
+<tr><td>8</td><td>What is Spring Data JPA?</td><td>Abstraction over JPA, provides repository interfaces, reduces boilerplate</td></tr>
+<tr><td>9</td><td>What is the difference between @RestController and @Controller?</td><td>@RestController = @Controller + @ResponseBody, returns data not view</td></tr>
+<tr><td>10</td><td>What is Spring Security?</td><td>Authentication and authorization framework for Spring applications</td></tr>
+<tr><td>11</td><td>What is @Transactional?</td><td>Defines transaction boundaries, manages commit/rollback</td></tr>
+<tr><td>12</td><td>What is Spring AOP?</td><td>Aspect-Oriented Programming, cross-cutting concerns like logging, security</td></tr>
+<tr><td>13</td><td>What is the difference between @RequestParam and @PathVariable?</td><td>@RequestParam for query params, @PathVariable for URI template variables</td></tr>
+<tr><td>14</td><td>What is Spring Boot DevTools?</td><td>Automatic restart, live reload, configurations for development</td></tr>
+<tr><td>15</td><td>What is the difference between Spring MVC and Spring WebFlux?</td><td>MVC is blocking/synchronous, WebFlux is non-blocking/reactive</td></tr>
+<tr><td>16</td><td>What is @ConfigurationProperties?</td><td>Binds external configuration to a POJO</td></tr>
+<tr><td>17</td><td>What is Spring Cloud?</td><td>Tools for building distributed systems and microservices</td></tr>
+<tr><td>18</td><td>What is Circuit Breaker pattern?</td><td>Prevents cascading failures in distributed systems</td></tr>
+<tr><td>19</td><td>What is the difference between @Bean and @Component?</td><td>@Bean in @Configuration class for explicit bean creation, @Component for auto-detection</td></tr>
+<tr><td>20</td><td>What is Spring Boot Test?</td><td>Testing support with @SpringBootTest, @WebMvcTest, @DataJpaTest</td></tr>
+</table>
+</div>
+
+<footer style="text-align:center; padding:20px; color:#888; font-size:12px;">
+    Spring Boot Concepts Reference Guide | Generated for dheerajkusuri/Spring-BootConcepts
+</footer>
+
+</body>
+</html>
