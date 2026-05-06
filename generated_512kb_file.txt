@@ -1,0 +1,1473 @@
+Spring Boot Concepts - Generated 512KB Reference File
+=======================================================
+This file is a generated reference document for the Spring-BootConcepts repository.
+It covers key Spring Boot concepts, annotations, configurations, and best practices.
+
+================================================================================
+SECTION 1: SPRING BOOT CORE CONCEPTS
+================================================================================
+
+1.1 What is Spring Boot?
+------------------------
+Spring Boot is an opinionated framework built on top of the Spring Framework.
+It simplifies the bootstrapping and development of new Spring applications.
+Spring Boot provides auto-configuration, embedded servers, and production-ready features.
+
+Key Features:
+- Auto-configuration: Automatically configures Spring application based on dependencies
+- Standalone: Creates standalone Spring applications
+- Embedded Servers: Tomcat, Jetty, or Undertow embedded (no WAR files needed)
+- Starter POMs: Simplified dependency management
+- Actuator: Production-ready features for monitoring and management
+- No XML configuration required
+
+1.2 Spring Boot Annotations
+----------------------------
+@SpringBootApplication     - Combines @Configuration, @EnableAutoConfiguration, @ComponentScan
+@RestController            - Combines @Controller and @ResponseBody
+@Controller                - Marks class as Spring MVC controller
+@Service                   - Marks class as service layer component
+@Repository                - Marks class as data access layer component
+@Component                 - Generic Spring-managed component
+@Autowired                 - Dependency injection annotation
+@Value                     - Injects values from properties files
+@Configuration             - Marks class as source of bean definitions
+@Bean                      - Marks method as bean producer
+@EnableAutoConfiguration   - Enables Spring Boot auto-configuration
+@ComponentScan             - Configures component scanning directives
+@RequestMapping            - Maps HTTP requests to handler methods
+@GetMapping                - Shortcut for @RequestMapping(method = GET)
+@PostMapping               - Shortcut for @RequestMapping(method = POST)
+@PutMapping                - Shortcut for @RequestMapping(method = PUT)
+@DeleteMapping             - Shortcut for @RequestMapping(method = DELETE)
+@PatchMapping              - Shortcut for @RequestMapping(method = PATCH)
+@PathVariable              - Binds URI template variable to method parameter
+@RequestParam              - Binds request parameter to method parameter
+@RequestBody               - Binds HTTP request body to method parameter
+@ResponseBody              - Binds method return value to HTTP response body
+@ResponseStatus            - Marks method/exception with HTTP status code
+@ExceptionHandler          - Handles exceptions in controller
+@ControllerAdvice          - Global exception handling across controllers
+@RestControllerAdvice      - Combines @ControllerAdvice and @ResponseBody
+@Transactional             - Marks method/class as transactional
+@Cacheable                 - Marks method result as cacheable
+@CacheEvict                - Triggers cache eviction
+@CachePut                  - Updates cache without interfering with method execution
+@Scheduled                 - Marks method as scheduled task
+@Async                     - Marks method as asynchronous
+@EnableScheduling          - Enables Spring's scheduled task execution
+@EnableAsync               - Enables Spring's asynchronous method execution
+@EnableCaching             - Enables Spring's annotation-driven cache management
+@Profile                   - Indicates component is eligible for registration when profiles are active
+@Conditional               - Indicates component is eligible based on condition
+@ConditionalOnProperty     - Condition based on property value
+@ConditionalOnClass        - Condition based on class presence
+@ConditionalOnMissingBean  - Condition based on bean absence
+@ConditionalOnBean         - Condition based on bean presence
+@Import                    - Imports additional configuration classes
+@PropertySource            - Declares property source for environment
+@EnableJpaRepositories     - Enables JPA repositories
+@EntityScan                - Configures entity scanning
+@EnableTransactionManagement - Enables annotation-driven transaction management
+
+================================================================================
+SECTION 2: SPRING BOOT AUTO-CONFIGURATION
+================================================================================
+
+2.1 How Auto-Configuration Works
+----------------------------------
+Spring Boot auto-configuration attempts to automatically configure your Spring
+application based on the jar dependencies you have added.
+
+Auto-configuration is implemented via:
+- @EnableAutoConfiguration annotation
+- spring.factories file (META-INF/spring.factories)
+- @Conditional annotations to apply configuration selectively
+
+2.2 Common Auto-Configurations
+--------------------------------
+DataSourceAutoConfiguration        - Configures DataSource bean
+HibernateJpaAutoConfiguration      - Configures JPA with Hibernate
+JdbcTemplateAutoConfiguration      - Configures JdbcTemplate
+SecurityAutoConfiguration          - Configures Spring Security
+WebMvcAutoConfiguration            - Configures Spring MVC
+ThymeleafAutoConfiguration         - Configures Thymeleaf template engine
+Jackson2ObjectMapperAutoConfiguration - Configures Jackson ObjectMapper
+CacheAutoConfiguration             - Configures caching
+KafkaAutoConfiguration             - Configures Apache Kafka
+RabbitAutoConfiguration            - Configures RabbitMQ
+RedisAutoConfiguration             - Configures Redis
+MongoAutoConfiguration             - Configures MongoDB
+ElasticsearchAutoConfiguration     - Configures Elasticsearch
+MailSenderAutoConfiguration        - Configures JavaMailSender
+TaskExecutionAutoConfiguration     - Configures ThreadPoolTaskExecutor
+TaskSchedulingAutoConfiguration    - Configures ThreadPoolTaskScheduler
+AopAutoConfiguration               - Configures Spring AOP
+BatchAutoConfiguration             - Configures Spring Batch
+ActuatorAutoConfiguration          - Configures Spring Actuator endpoints
+
+2.3 Disabling Auto-Configuration
+----------------------------------
+You can disable specific auto-configurations:
+
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+public class MyApplication { }
+
+Or via properties:
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+================================================================================
+SECTION 3: SPRING BOOT STARTERS
+================================================================================
+
+3.1 Core Starters
+------------------
+spring-boot-starter              - Core starter, includes auto-configuration support, logging and YAML
+spring-boot-starter-web          - Starter for building web, including RESTful, applications using Spring MVC
+spring-boot-starter-data-jpa     - Starter for using Spring Data JPA with Hibernate
+spring-boot-starter-security     - Starter for using Spring Security
+spring-boot-starter-test         - Starter for testing Spring Boot applications
+spring-boot-starter-actuator     - Starter for using Spring Boot Actuator
+spring-boot-starter-thymeleaf    - Starter for building MVC web applications using Thymeleaf views
+spring-boot-starter-validation   - Starter for using Java Bean Validation with Hibernate Validator
+spring-boot-starter-cache        - Starter for using Spring Framework caching support
+spring-boot-starter-aop          - Starter for aspect-oriented programming with Spring AOP and AspectJ
+spring-boot-starter-batch        - Starter for using Spring Batch
+spring-boot-starter-mail         - Starter for using Java Mail and Spring Framework email sending support
+spring-boot-starter-websocket    - Starter for building WebSocket applications using Spring WebSocket
+
+3.2 Data Starters
+------------------
+spring-boot-starter-data-mongodb    - Starter for using MongoDB document-oriented database
+spring-boot-starter-data-redis      - Starter for using Redis key-value data store
+spring-boot-starter-data-cassandra  - Starter for using Cassandra distributed database
+spring-boot-starter-data-elasticsearch - Starter for using Elasticsearch search and analytics engine
+spring-boot-starter-data-solr       - Starter for using Apache Solr search platform
+spring-boot-starter-data-neo4j      - Starter for using Neo4j graph database
+spring-boot-starter-data-ldap       - Starter for using Spring Data LDAP
+spring-boot-starter-data-rest       - Starter for exposing Spring Data repositories over REST using Spring Data REST
+spring-boot-starter-jdbc            - Starter for using JDBC with the HikariCP connection pool
+
+3.3 Cloud Starters
+-------------------
+spring-cloud-starter-netflix-eureka-client  - Eureka service discovery client
+spring-cloud-starter-netflix-eureka-server  - Eureka service discovery server
+spring-cloud-starter-netflix-ribbon         - Client-side load balancing
+spring-cloud-starter-netflix-hystrix        - Circuit breaker
+spring-cloud-starter-openfeign              - Declarative REST client
+spring-cloud-starter-gateway                - API Gateway
+spring-cloud-starter-config                 - Centralized configuration management
+spring-cloud-starter-sleuth                 - Distributed tracing
+spring-cloud-starter-zipkin                 - Distributed tracing with Zipkin
+spring-cloud-starter-bus-amqp              - Spring Cloud Bus with AMQP
+spring-cloud-starter-stream-rabbit          - Spring Cloud Stream with RabbitMQ
+spring-cloud-starter-stream-kafka           - Spring Cloud Stream with Kafka
+
+================================================================================
+SECTION 4: SPRING BOOT CONFIGURATION
+================================================================================
+
+4.1 Application Properties
+----------------------------
+Spring Boot uses application.properties or application.yml for configuration.
+
+Common Properties:
+# Server Configuration
+server.port=8080
+server.servlet.context-path=/api
+server.ssl.enabled=true
+server.ssl.key-store=classpath:keystore.jks
+server.ssl.key-store-password=secret
+server.ssl.key-store-type=JKS
+
+# DataSource Configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=secret
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.connection-timeout=30000
+
+# JPA Configuration
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.open-in-view=false
+
+# Logging Configuration
+logging.level.root=INFO
+logging.level.org.springframework=DEBUG
+logging.level.com.myapp=TRACE
+logging.file.name=app.log
+logging.file.path=/var/log/myapp
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+
+# Spring Security
+spring.security.user.name=admin
+spring.security.user.password=secret
+spring.security.user.roles=ADMIN
+
+# Actuator
+management.endpoints.web.exposure.include=*
+management.endpoint.health.show-details=always
+management.endpoint.info.enabled=true
+management.server.port=8081
+
+# Cache
+spring.cache.type=redis
+spring.cache.redis.time-to-live=600000
+spring.cache.redis.cache-null-values=false
+
+# Redis
+spring.redis.host=localhost
+spring.redis.port=6379
+spring.redis.password=secret
+spring.redis.timeout=60000
+
+# Kafka
+spring.kafka.bootstrap-servers=localhost:9092
+spring.kafka.consumer.group-id=myGroup
+spring.kafka.consumer.auto-offset-reset=earliest
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+
+# RabbitMQ
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+spring.rabbitmq.virtual-host=/
+
+# Mail
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=user@gmail.com
+spring.mail.password=secret
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Thymeleaf
+spring.thymeleaf.cache=false
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.encoding=UTF-8
+
+# Multipart File Upload
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+
+4.2 Profiles
+-------------
+Spring Boot supports multiple profiles for different environments.
+
+# application-dev.properties
+spring.datasource.url=jdbc:h2:mem:devdb
+spring.jpa.hibernate.ddl-auto=create-drop
+
+# application-prod.properties
+spring.datasource.url=jdbc:mysql://prod-server:3306/proddb
+spring.jpa.hibernate.ddl-auto=validate
+
+# Activate profile
+spring.profiles.active=dev
+
+# In code
+@Profile("dev")
+@Component
+public class DevDataLoader implements CommandLineRunner { }
+
+@Profile("prod")
+@Component
+public class ProdDataLoader implements CommandLineRunner { }
+
+4.3 Configuration Properties
+------------------------------
+@ConfigurationProperties(prefix = "app")
+@Component
+public class AppProperties {
+    private String name;
+    private String version;
+    private List<String> allowedOrigins;
+    private Map<String, String> metadata;
+    // getters and setters
+}
+
+# application.properties
+app.name=MyApp
+app.version=1.0.0
+app.allowed-origins=http://localhost:3000,http://localhost:4200
+app.metadata.author=John Doe
+app.metadata.team=Backend
+
+================================================================================
+SECTION 5: SPRING DATA JPA
+================================================================================
+
+5.1 Entity Definition
+----------------------
+@Entity
+@Table(name = "employees")
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "first_name", nullable = false, length = 50)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 50)
+    private String lastName;
+
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
+
+    @Column(name = "salary")
+    private BigDecimal salary;
+
+    @Column(name = "hire_date")
+    private LocalDate hireDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses = new ArrayList<>();
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Version
+    private Long version;
+}
+
+5.2 Repository Interface
+-------------------------
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    // Derived query methods
+    List<Employee> findByLastName(String lastName);
+    List<Employee> findByFirstNameAndLastName(String firstName, String lastName);
+    List<Employee> findByDepartmentName(String departmentName);
+    List<Employee> findBySalaryGreaterThan(BigDecimal salary);
+    List<Employee> findByHireDateBetween(LocalDate start, LocalDate end);
+    Optional<Employee> findByEmail(String email);
+    boolean existsByEmail(String email);
+    long countByDepartmentId(Long departmentId);
+    void deleteByEmail(String email);
+
+    // JPQL queries
+    @Query("SELECT e FROM Employee e WHERE e.salary > :minSalary ORDER BY e.salary DESC")
+    List<Employee> findHighEarners(@Param("minSalary") BigDecimal minSalary);
+
+    @Query("SELECT e FROM Employee e JOIN FETCH e.department WHERE e.department.name = :deptName")
+    List<Employee> findByDepartmentWithDetails(@Param("deptName") String deptName);
+
+    // Native queries
+    @Query(value = "SELECT * FROM employees WHERE YEAR(hire_date) = :year", nativeQuery = true)
+    List<Employee> findByHireYear(@Param("year") int year);
+
+    // Modifying queries
+    @Modifying
+    @Query("UPDATE Employee e SET e.salary = e.salary * :factor WHERE e.department.id = :deptId")
+    int updateSalaryByDepartment(@Param("deptId") Long deptId, @Param("factor") BigDecimal factor);
+
+    // Pagination and sorting
+    Page<Employee> findByDepartmentId(Long departmentId, Pageable pageable);
+    List<Employee> findByLastName(String lastName, Sort sort);
+
+    // Projections
+    List<EmployeeSummary> findByDepartmentName(String departmentName);
+}
+
+5.3 Service Layer
+------------------
+@Service
+@Transactional
+public class EmployeeService {
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Employee> getAllEmployees(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id)
+            .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
+    }
+
+    public Employee createEmployee(Employee employee) {
+        if (employeeRepository.existsByEmail(employee.getEmail())) {
+            throw new DuplicateEmailException("Email already exists: " + employee.getEmail());
+        }
+        return employeeRepository.save(employee);
+    }
+
+    public Employee updateEmployee(Long id, Employee employeeDetails) {
+        Employee employee = getEmployeeById(id);
+        employee.setFirstName(employeeDetails.getFirstName());
+        employee.setLastName(employeeDetails.getLastName());
+        employee.setSalary(employeeDetails.getSalary());
+        return employeeRepository.save(employee);
+    }
+
+    public void deleteEmployee(Long id) {
+        Employee employee = getEmployeeById(id);
+        employeeRepository.delete(employee);
+    }
+}
+
+================================================================================
+SECTION 6: SPRING SECURITY
+================================================================================
+
+6.1 Security Configuration
+----------------------------
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthFilter;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .csrf().disable()
+            .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/public/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
+                .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling()
+                .authenticationEntryPoint(unauthorizedHandler)
+                .accessDeniedHandler(accessDeniedHandler);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+}
+
+6.2 JWT Utility
+----------------
+@Component
+public class JwtUtil {
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private Long expiration;
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", userDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList()));
+        return createToken(claims, userDetails.getUsername());
+    }
+
+    private String createToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+            .setClaims(claims)
+            .setSubject(subject)
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + expiration))
+            .signWith(SignatureAlgorithm.HS512, secret)
+            .compact();
+    }
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+}
+
+================================================================================
+SECTION 7: SPRING BOOT ACTUATOR
+================================================================================
+
+7.1 Built-in Endpoints
+-----------------------
+/actuator/health          - Application health information
+/actuator/info            - Arbitrary application info
+/actuator/metrics         - Application metrics
+/actuator/env             - Environment properties
+/actuator/beans           - All Spring beans
+/actuator/mappings        - All @RequestMapping paths
+/actuator/loggers         - Logging configuration
+/actuator/threaddump      - Thread dump
+/actuator/heapdump        - Heap dump
+/actuator/httptrace       - HTTP trace information
+/actuator/auditevents     - Audit events
+/actuator/scheduledtasks  - Scheduled tasks
+/actuator/caches          - Cache information
+/actuator/conditions      - Auto-configuration conditions
+/actuator/configprops     - @ConfigurationProperties
+/actuator/flyway          - Flyway database migrations
+/actuator/liquibase       - Liquibase database migrations
+/actuator/integrationgraph - Spring Integration graph
+/actuator/sessions        - Spring Session information
+/actuator/shutdown        - Graceful shutdown (disabled by default)
+
+7.2 Custom Health Indicator
+----------------------------
+@Component
+public class DatabaseHealthIndicator implements HealthIndicator {
+    @Autowired
+    private DataSource dataSource;
+
+    @Override
+    public Health health() {
+        try (Connection connection = dataSource.getConnection()) {
+            if (connection.isValid(1)) {
+                return Health.up()
+                    .withDetail("database", "Available")
+                    .withDetail("validationQuery", "SELECT 1")
+                    .build();
+            }
+        } catch (Exception e) {
+            return Health.down()
+                .withDetail("database", "Unavailable")
+                .withException(e)
+                .build();
+        }
+        return Health.down().withDetail("database", "Unavailable").build();
+    }
+}
+
+7.3 Custom Metrics
+-------------------
+@Component
+public class OrderMetrics {
+    private final MeterRegistry meterRegistry;
+    private final Counter orderCounter;
+    private final Timer orderProcessingTimer;
+    private final Gauge pendingOrdersGauge;
+
+    public OrderMetrics(MeterRegistry meterRegistry, OrderRepository orderRepository) {
+        this.meterRegistry = meterRegistry;
+        this.orderCounter = Counter.builder("orders.created")
+            .description("Number of orders created")
+            .tag("type", "all")
+            .register(meterRegistry);
+        this.orderProcessingTimer = Timer.builder("orders.processing.time")
+            .description("Time taken to process orders")
+            .register(meterRegistry);
+        this.pendingOrdersGauge = Gauge.builder("orders.pending", orderRepository, repo ->
+            repo.countByStatus("PENDING"))
+            .description("Number of pending orders")
+            .register(meterRegistry);
+    }
+
+    public void recordOrderCreated() {
+        orderCounter.increment();
+    }
+
+    public void recordOrderProcessingTime(long timeInMs) {
+        orderProcessingTimer.record(timeInMs, TimeUnit.MILLISECONDS);
+    }
+}
+
+================================================================================
+SECTION 8: SPRING BOOT TESTING
+================================================================================
+
+8.1 Unit Testing
+-----------------
+@ExtendWith(MockitoExtension.class)
+class EmployeeServiceTest {
+    @Mock
+    private EmployeeRepository employeeRepository;
+
+    @InjectMocks
+    private EmployeeService employeeService;
+
+    @Test
+    void shouldReturnEmployeeWhenValidId() {
+        Employee employee = new Employee();
+        employee.setId(1L);
+        employee.setFirstName("John");
+        employee.setLastName("Doe");
+
+        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+
+        Employee result = employeeService.getEmployeeById(1L);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getFirstName()).isEqualTo("John");
+        verify(employeeRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenEmployeeNotFound() {
+        when(employeeRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(EmployeeNotFoundException.class, () ->
+            employeeService.getEmployeeById(99L));
+    }
+}
+
+8.2 Integration Testing
+------------------------
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@Transactional
+class EmployeeControllerIntegrationTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Test
+    void shouldCreateEmployee() throws Exception {
+        Employee employee = new Employee();
+        employee.setFirstName("Jane");
+        employee.setLastName("Smith");
+        employee.setEmail("jane.smith@example.com");
+
+        mockMvc.perform(post("/api/employees")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(employee)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.firstName").value("Jane"))
+            .andExpect(jsonPath("$.lastName").value("Smith"))
+            .andExpect(jsonPath("$.email").value("jane.smith@example.com"));
+    }
+
+    @Test
+    void shouldGetAllEmployees() throws Exception {
+        mockMvc.perform(get("/api/employees")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray());
+    }
+}
+
+8.3 Repository Testing
+-----------------------
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class EmployeeRepositoryTest {
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Test
+    void shouldFindByEmail() {
+        Employee employee = new Employee();
+        employee.setFirstName("Bob");
+        employee.setLastName("Johnson");
+        employee.setEmail("bob.johnson@example.com");
+        entityManager.persist(employee);
+        entityManager.flush();
+
+        Optional<Employee> found = employeeRepository.findByEmail("bob.johnson@example.com");
+
+        assertThat(found).isPresent();
+        assertThat(found.get().getFirstName()).isEqualTo("Bob");
+    }
+}
+
+================================================================================
+SECTION 9: SPRING BOOT MICROSERVICES
+================================================================================
+
+9.1 Service Discovery with Eureka
+-----------------------------------
+// Eureka Server
+@SpringBootApplication
+@EnableEurekaServer
+public class EurekaServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaServerApplication.class, args);
+    }
+}
+
+// application.yml for Eureka Server
+server:
+  port: 8761
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+
+// Eureka Client
+@SpringBootApplication
+@EnableEurekaClient
+public class UserServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(UserServiceApplication.class, args);
+    }
+}
+
+// application.yml for Eureka Client
+spring:
+  application:
+    name: user-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+9.2 Load Balancing with Ribbon
+--------------------------------
+@Configuration
+public class RibbonConfig {
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+}
+
+@Service
+public class OrderService {
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public User getUserById(Long userId) {
+        return restTemplate.getForObject(
+            "http://user-service/api/users/" + userId,
+            User.class
+        );
+    }
+}
+
+9.3 Feign Client
+-----------------
+@FeignClient(name = "user-service", fallback = UserServiceFallback.class)
+public interface UserServiceClient {
+    @GetMapping("/api/users/{id}")
+    User getUserById(@PathVariable("id") Long id);
+
+    @GetMapping("/api/users")
+    List<User> getAllUsers();
+
+    @PostMapping("/api/users")
+    User createUser(@RequestBody User user);
+}
+
+@Component
+public class UserServiceFallback implements UserServiceClient {
+    @Override
+    public User getUserById(Long id) {
+        return new User(id, "Unknown", "User");
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public User createUser(User user) {
+        return null;
+    }
+}
+
+9.4 Circuit Breaker with Hystrix
+----------------------------------
+@Service
+public class ProductService {
+    @Autowired
+    private ProductServiceClient productServiceClient;
+
+    @HystrixCommand(
+        fallbackMethod = "getDefaultProduct",
+        commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000"),
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "2000")
+        }
+    )
+    public Product getProductById(Long id) {
+        return productServiceClient.getProductById(id);
+    }
+
+    public Product getDefaultProduct(Long id) {
+        return new Product(id, "Default Product", BigDecimal.ZERO);
+    }
+}
+
+================================================================================
+SECTION 10: SPRING BOOT MESSAGING
+================================================================================
+
+10.1 Apache Kafka
+------------------
+// Producer Configuration
+@Configuration
+public class KafkaProducerConfig {
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Bean
+    public ProducerFactory<String, Object> producerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        configProps.put(ProducerConfig.ACKS_CONFIG, "all");
+        configProps.put(ProducerConfig.RETRIES_CONFIG, 3);
+        configProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+        return new DefaultKafkaProducerFactory<>(configProps);
+    }
+
+    @Bean
+    public KafkaTemplate<String, Object> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
+    }
+}
+
+// Consumer Configuration
+@Configuration
+public class KafkaConsumerConfig {
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
+
+    @Value("${spring.kafka.consumer.group-id}")
+    private String groupId;
+
+    @Bean
+    public ConsumerFactory<String, Object> consumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        return new DefaultKafkaConsumerFactory<>(props);
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory =
+            new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        factory.setConcurrency(3);
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+        return factory;
+    }
+}
+
+// Producer Service
+@Service
+public class KafkaProducerService {
+    @Autowired
+    private KafkaTemplate<String, Object> kafkaTemplate;
+
+    public void sendMessage(String topic, String key, Object message) {
+        ListenableFuture<SendResult<String, Object>> future =
+            kafkaTemplate.send(topic, key, message);
+        future.addCallback(
+            result -> log.info("Message sent successfully: {}", result.getRecordMetadata()),
+            ex -> log.error("Failed to send message: {}", ex.getMessage())
+        );
+    }
+}
+
+// Consumer Service
+@Service
+public class KafkaConsumerService {
+    @KafkaListener(topics = "${kafka.topic.orders}", groupId = "${spring.kafka.consumer.group-id}")
+    public void consumeOrder(ConsumerRecord<String, Order> record, Acknowledgment acknowledgment) {
+        try {
+            Order order = record.value();
+            processOrder(order);
+            acknowledgment.acknowledge();
+        } catch (Exception e) {
+            log.error("Error processing order: {}", e.getMessage());
+        }
+    }
+}
+
+10.2 RabbitMQ
+--------------
+// RabbitMQ Configuration
+@Configuration
+public class RabbitMQConfig {
+    public static final String QUEUE_NAME = "order.queue";
+    public static final String EXCHANGE_NAME = "order.exchange";
+    public static final String ROUTING_KEY = "order.routing.key";
+
+    @Bean
+    public Queue orderQueue() {
+        return QueueBuilder.durable(QUEUE_NAME)
+            .withArgument("x-dead-letter-exchange", "order.dlx")
+            .withArgument("x-dead-letter-routing-key", "order.dead")
+            .build();
+    }
+
+    @Bean
+    public TopicExchange orderExchange() {
+        return new TopicExchange(EXCHANGE_NAME);
+    }
+
+    @Bean
+    public Binding orderBinding(Queue orderQueue, TopicExchange orderExchange) {
+        return BindingBuilder.bind(orderQueue).to(orderExchange).with(ROUTING_KEY);
+    }
+
+    @Bean
+    public MessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(jsonMessageConverter());
+        return rabbitTemplate;
+    }
+}
+
+================================================================================
+SECTION 11: SPRING BOOT CACHING
+================================================================================
+
+11.1 Cache Configuration
+-------------------------
+@Configuration
+@EnableCaching
+public class CacheConfig {
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+        RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofMinutes(10))
+            .disableCachingNullValues()
+            .serializeKeysWith(RedisSerializationContext.SerializationPair
+                .fromSerializer(new StringRedisSerializer()))
+            .serializeValuesWith(RedisSerializationContext.SerializationPair
+                .fromSerializer(new GenericJackson2JsonRedisSerializer()));
+
+        return RedisCacheManager.builder(redisConnectionFactory)
+            .cacheDefaults(cacheConfiguration)
+            .withCacheConfiguration("employees", RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(5)))
+            .withCacheConfiguration("departments", RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofHours(1)))
+            .build();
+    }
+}
+
+11.2 Cache Usage
+-----------------
+@Service
+public class EmployeeService {
+    @Cacheable(value = "employees", key = "#id", unless = "#result == null")
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id).orElse(null);
+    }
+
+    @CachePut(value = "employees", key = "#employee.id")
+    public Employee updateEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    @CacheEvict(value = "employees", key = "#id")
+    public void deleteEmployee(Long id) {
+        employeeRepository.deleteById(id);
+    }
+
+    @CacheEvict(value = "employees", allEntries = true)
+    public void clearAllEmployeeCache() {
+        // This method clears all entries in the employees cache
+    }
+
+    @Caching(
+        cacheable = @Cacheable(value = "employees", key = "#email"),
+        put = @CachePut(value = "employeesByEmail", key = "#email")
+    )
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.findByEmail(email).orElse(null);
+    }
+}
+
+================================================================================
+SECTION 12: SPRING BOOT EXCEPTION HANDLING
+================================================================================
+
+12.1 Global Exception Handler
+-------------------------------
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleEmployeeNotFoundException(EmployeeNotFoundException ex,
+                                                          WebRequest request) {
+        return ErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.NOT_FOUND.value())
+            .error("Not Found")
+            .message(ex.getMessage())
+            .path(request.getDescription(false))
+            .build();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ValidationErrorResponse handleValidationException(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+            errors.put(error.getField(), error.getDefaultMessage()));
+        return ValidationErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.BAD_REQUEST.value())
+            .errors(errors)
+            .build();
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessDeniedException(AccessDeniedException ex) {
+        return ErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.FORBIDDEN.value())
+            .error("Forbidden")
+            .message("You don't have permission to access this resource")
+            .build();
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleGenericException(Exception ex, WebRequest request) {
+        return ErrorResponse.builder()
+            .timestamp(LocalDateTime.now())
+            .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+            .error("Internal Server Error")
+            .message("An unexpected error occurred")
+            .path(request.getDescription(false))
+            .build();
+    }
+}
+
+================================================================================
+SECTION 13: SPRING BOOT VALIDATION
+================================================================================
+
+13.1 Bean Validation
+---------------------
+public class EmployeeRequest {
+    @NotBlank(message = "First name is required")
+    @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
+    private String firstName;
+
+    @NotBlank(message = "Last name is required")
+    @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
+    private String lastName;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
+    private String email;
+
+    @NotNull(message = "Salary is required")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be positive")
+    @Digits(integer = 10, fraction = 2, message = "Salary format is invalid")
+    private BigDecimal salary;
+
+    @NotNull(message = "Hire date is required")
+    @PastOrPresent(message = "Hire date cannot be in the future")
+    private LocalDate hireDate;
+
+    @NotNull(message = "Department ID is required")
+    @Positive(message = "Department ID must be positive")
+    private Long departmentId;
+
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "Phone number is invalid")
+    private String phoneNumber;
+}
+
+13.2 Custom Validator
+----------------------
+@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = UniqueEmailValidator.class)
+public @interface UniqueEmail {
+    String message() default "Email already exists";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
+
+@Component
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Override
+    public boolean isValid(String email, ConstraintValidatorContext context) {
+        if (email == null || email.isEmpty()) {
+            return true;
+        }
+        return !employeeRepository.existsByEmail(email);
+    }
+}
+
+================================================================================
+SECTION 14: SPRING BOOT DOCKER & DEPLOYMENT
+================================================================================
+
+14.1 Dockerfile
+----------------
+FROM openjdk:17-jdk-slim AS builder
+WORKDIR /app
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+COPY src ./src
+RUN ./mvnw package -DskipTests
+
+FROM openjdk:17-jre-slim
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+EXPOSE 8080
+ENV JAVA_OPTS="-Xms256m -Xmx512m"
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+
+14.2 Docker Compose
+--------------------
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/mydb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=secret
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=mydb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - app-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:
+    driver: bridge
+
+================================================================================
+SECTION 15: SPRING BOOT BEST PRACTICES
+================================================================================
+
+15.1 Code Organization
+-----------------------
+- Use layered architecture: Controller -> Service -> Repository
+- Keep controllers thin - delegate business logic to services
+- Use DTOs to decouple API contracts from domain models
+- Use MapStruct or ModelMapper for object mapping
+- Implement proper exception hierarchy
+- Use constructor injection over field injection
+- Make services stateless
+- Use interfaces for service layer to enable easy mocking
+
+15.2 Performance Best Practices
+---------------------------------
+- Use pagination for large datasets
+- Implement caching for frequently accessed data
+- Use lazy loading for JPA relationships
+- Avoid N+1 query problems - use JOIN FETCH or @EntityGraph
+- Use connection pooling (HikariCP is default)
+- Enable HTTP/2 for better performance
+- Use async processing for non-critical operations
+- Implement proper indexing in database
+- Use projections instead of full entities when only partial data needed
+- Enable compression for HTTP responses
+
+15.3 Security Best Practices
+------------------------------
+- Always use HTTPS in production
+- Implement proper authentication and authorization
+- Use BCrypt for password hashing
+- Implement rate limiting to prevent abuse
+- Validate and sanitize all inputs
+- Use parameterized queries to prevent SQL injection
+- Implement CORS properly
+- Keep dependencies updated to patch security vulnerabilities
+- Use environment variables for sensitive configuration
+- Implement proper logging without exposing sensitive data
+- Use Spring Security's CSRF protection for web applications
+- Implement proper session management
+
+15.4 Testing Best Practices
+-----------------------------
+- Write unit tests for all business logic
+- Write integration tests for API endpoints
+- Use test containers for database integration tests
+- Aim for high code coverage (80%+)
+- Use meaningful test names that describe behavior
+- Follow AAA pattern: Arrange, Act, Assert
+- Mock external dependencies in unit tests
+- Use @DataJpaTest for repository tests
+- Use @WebMvcTest for controller tests
+- Use @SpringBootTest for full integration tests
+
+15.5 Monitoring and Observability
+-----------------------------------
+- Enable Spring Boot Actuator
+- Implement custom health indicators
+- Use Micrometer for metrics collection
+- Integrate with Prometheus and Grafana
+- Implement distributed tracing with Sleuth and Zipkin
+- Use structured logging (JSON format)
+- Implement correlation IDs for request tracing
+- Set up alerts for critical metrics
+- Monitor JVM metrics (heap, GC, threads)
+- Track business metrics (orders, users, revenue)
+
+================================================================================
+END OF DOCUMENT
+Generated for Spring-BootConcepts Repository
+Total Sections: 15
+================================================================================
+PADDING SECTION - ADDITIONAL SPRING BOOT REFERENCE DATA
+================================================================================
+Spring Boot Version History:
+1.0.0 - March 2014 - Initial release
+1.1.0 - June 2014
+1.2.0 - December 2014
+1.3.0 - November 2015
+1.4.0 - August 2016
+1.5.0 - January 2017
+2.0.0 - March 2018 - Major release with Spring 5
+2.1.0 - October 2018
+2.2.0 - October 2019
+2.3.0 - May 2020
+2.4.0 - November 2020
+2.5.0 - May 2021
+2.6.0 - November 2021
+2.7.0 - May 2022
+3.0.0 - November 2022 - Major release with Spring 6, Java 17 baseline
+3.1.0 - May 2023
+3.2.0 - November 2023
+3.3.0 - May 2024
+
+Common Spring Boot Interview Questions:
+Q: What is Spring Boot and how does it differ from Spring Framework?
+A: Spring Boot is an opinionated framework built on top of Spring Framework that simplifies
+   application development by providing auto-configuration, embedded servers, and starter POMs.
+   Spring Framework requires manual configuration while Spring Boot follows convention over
+   configuration principle.
+
+Q: What is auto-configuration in Spring Boot?
+A: Auto-configuration is a feature that automatically configures Spring application based on
+   the dependencies present in the classpath. It uses @Conditional annotations to apply
+   configuration only when certain conditions are met.
+
+Q: What are Spring Boot starters?
+A: Spring Boot starters are a set of convenient dependency descriptors that you can include
+   in your application. They provide a one-stop-shop for all the Spring and related technology
+   that you need without having to hunt through sample code and copy-paste loads of dependency
+   descriptors.
+
+Q: How does Spring Boot handle externalized configuration?
+A: Spring Boot supports externalized configuration through application.properties,
+   application.yml, environment variables, command-line arguments, and @ConfigurationProperties.
+   Properties are loaded in a specific order with later sources overriding earlier ones.
+
+Q: What is Spring Boot Actuator?
+A: Spring Boot Actuator provides production-ready features to help monitor and manage your
+   application. It exposes various endpoints for health checks, metrics, environment info,
+   bean definitions, and more.
+
+Q: How do you implement security in Spring Boot?
+A: Security in Spring Boot is implemented using Spring Security. You configure it by extending
+   WebSecurityConfigurerAdapter and overriding configure methods. Common approaches include
+   form-based authentication, HTTP Basic, JWT tokens, and OAuth2.
+
+Q: What is the difference between @Component, @Service, @Repository, and @Controller?
+A: All four are specializations of @Component. @Service is used for business logic layer,
+   @Repository is used for data access layer (also provides exception translation),
+   @Controller is used for presentation layer (Spring MVC), and @Component is a generic
+   stereotype for any Spring-managed component.
+
+Q: How does Spring Boot support microservices?
+A: Spring Boot supports microservices through Spring Cloud which provides tools for service
+   discovery (Eureka), load balancing (Ribbon), circuit breaking (Hystrix), API gateway
+   (Zuul/Gateway), centralized configuration (Config Server), and distributed tracing (Sleuth).
+
+Q: What is the purpose of @SpringBootApplication annotation?
+A: @SpringBootApplication is a convenience annotation that combines @Configuration,
+   @EnableAutoConfiguration, and @ComponentScan. It marks the main class of a Spring Boot
+   application and enables auto-configuration and component scanning.
+
+Q: How do you handle transactions in Spring Boot?
+A: Transactions in Spring Boot are handled using @Transactional annotation. You can apply it
+   at class or method level. Spring creates a proxy that manages transaction boundaries.
+   You can configure propagation, isolation, timeout, and rollback rules.
+
+Additional Configuration Examples:
+# Flyway Database Migration
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+spring.flyway.baseline-on-migrate=true
+spring.flyway.validate-on-migrate=true
+
+# Liquibase Database Migration
+spring.liquibase.enabled=true
+spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml
+
+# Spring Session
+spring.session.store-type=redis
+spring.session.timeout=30m
+spring.session.redis.namespace=spring:session
+
+# Spring Batch
+spring.batch.job.enabled=false
+spring.batch.initialize-schema=always
+
+# Spring Integration
+spring.integration.jdbc.initialize-schema=always
+
+# Async Configuration
+spring.task.execution.pool.core-size=8
+spring.task.execution.pool.max-size=16
+spring.task.execution.pool.queue-capacity=100
+spring.task.execution.thread-name-prefix=async-task-
+
+# Scheduling Configuration
+spring.task.scheduling.pool.size=5
+spring.task.scheduling.thread-name-prefix=scheduled-task-
+
+# HTTP Client Configuration
+spring.mvc.async.request-timeout=30000
+server.tomcat.max-threads=200
+server.tomcat.min-spare-threads=10
+server.tomcat.accept-count=100
+server.tomcat.connection-timeout=20000
+
+# Compression
+server.compression.enabled=true
+server.compression.mime-types=application/json,application/xml,text/html,text/plain
+server.compression.min-response-size=1024
+
+# HTTP/2
+server.http2.enabled=true
+
+# Graceful Shutdown
+server.shutdown=graceful
+spring.lifecycle.timeout-per-shutdown-phase=30s
+================================================================================
